@@ -1,0 +1,27 @@
+{% extends 'app/base.html' %}
+
+{% block Content %}
+  <!DOCTYPE html>
+  <html>
+    <head>
+   
+    </head>
+    <body>
+      <div class="main-block">
+        <form action="{% url 'registerData' %}" method="post">
+          {% csrf_token %}
+            <h1>Register here</h1>
+            <h1 style="color: red; font-size: 20px;" > {{ msg }} </h1>
+          <div class="info">
+            <input class="fname" type="text" name="name" placeholder="Full name" />
+            <input type="email" name="email" placeholder="Email" />
+            <input type="tel" name="contact" placeholder="Phone number" />
+            <input type="password" name="password" placeholder="Password" />
+            <input type="password" name="confirm_pass" placeholder="Confirm Password" />
+          </div>
+          <button>Submit</button>
+        </form>
+      </div>
+    </body>
+  </html>
+{% endblock %}

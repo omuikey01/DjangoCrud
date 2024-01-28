@@ -1,0 +1,126 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block Content %}
+  <section class="allProfiledata">
+    <section class="profile">
+      <div class="profileimages">
+        <div class="images">
+          <img src="{% static 'images/r1.jpg' %}" alt="img1" />
+          <img src="{% static 'images/r2.jpeg' %}" alt="img2" />
+          <img src="{% static 'images/r3.jpeg' %}" alt="img3" />
+          <img src="{% static 'images/r4.jpg' %}" alt="img4" />
+        </div>
+      </div>
+      <div>
+        <h1>Welcome to {{ data.name }} <a href="#">Logout</a></h1>
+      </div>
+    </section>
+
+
+    <section class="querycommitsection">
+      <div class="form_bg_color" >
+
+        <form action="{% url 'queryData' %}" method="post">
+          {% csrf_token %}
+            <h1> Commit Your Query </h1>
+          <label>Name : </label>
+          <input type="text" name="name" value={{data.name}} readonly>
+          <input name="email" value={{data.email}} type="hidden">
+          <br />
+          <label>Your Query</label>
+          <br />
+          <textarea name="query" value={{data.query}} ></textarea>
+          <button>Submit</button>
+        </form>
+      </div>
+    </section>
+
+
+    <section class="datashowsection">
+
+      <div class="showquerybtn form_bg_color" >
+        <form method="post" action="{% url 'search' mail=data.email %}" >
+          {% csrf_token %}
+        <div>
+            <input type="search" name="search" placeholder="Search" > 
+            <button> Search </button>
+        </div>
+        
+      </form>
+      <br /> <br />
+
+
+        <form action="{% url 'showqueryData' %}" method="post">
+            {% csrf_token %}
+          <button value={{data.email}} name="SQBtn" >Show all Queryies</button>
+        </form>
+      </div>
+
+      {% if querydata %}
+      <table border="1">
+        <tr>
+          <th>Name</th>
+          <th>Query</th>
+          <th>Date</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+        {% for d in querydata %}
+        <tr>
+            <th>{{d.name}}</th>
+            <th>{{d.query}}</th>
+            <th>{{d.date}}</th>
+            <form method="post" action="{% url 'edit' mail=data.email idd=d.id %}" >
+              {% csrf_token %}
+              <th><button style="background-color: green; color: #fff;" > Edit </button></th>
+            </form>
+            <form method="post" action="{% url 'delete' mail=data.email idd=d.id  %}" >
+              {% csrf_token %}
+              <th><button style="background-color: red; color: #fff;" > Delete </button></th>
+            </form>
+          </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+      
+      
+      {% if NoQuery  %}
+      <table>
+        <tr>
+          <th> {{NoQuery}} </th>  
+        </tr>
+      </table>
+        {% endif %}
+    </section>
+
+
+    
+
+
+{% if update %}
+    <section class="querycommitsection">
+      <div class="form_bg_color" >
+
+        <form action="{% url 'updatequery' idd=update.idd %}" method="post">
+          {% csrf_token %}
+            <h1> Update Query </h1>
+          <label>Name : </label>
+          <input type="text" name="name" value={{update.name}} readonly>
+          <input name="email" value={{update.email}}  type="hidden">
+          <br />
+          <label>Your Query</label>
+          <br />
+          <textarea name="query" value={{update.query}} ></textarea>
+          <button>Submit</button>
+        </form>
+      </div>
+    </section>
+
+    {% endif %}
+
+
+{% endblock %}
+
+
+queryData

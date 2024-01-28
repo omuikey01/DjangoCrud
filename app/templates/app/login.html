@@ -1,0 +1,13 @@
+{% extends 'app/base.html' %}
+
+{% block Content %}
+  <div class="main-block">
+    <form action="{% url 'loginData' %}" method="post">
+      {% csrf_token %}
+      <h1>Login</h1>
+      <h1 style="color: red; font-size: 20px;" > {{ msg }} </h1>
+      {{ form.Lform }}
+      <button>Submit</button>
+    </form>
+  </div>
+{% endblock %}
